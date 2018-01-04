@@ -1,45 +1,52 @@
+from random import sample, randint
+
 RED = 'red'
 BLACK = 'black'
 COLORS = [RED, BLACK]
+
+STICK = 'stick'
+HIT = 'hit'
+ACTIONS = [STICK, HIT]
+
+SCORES = list(range(1, 11))*2 + list(range(-10, 0))
+
+TERMINATED = 'terminated'
 
 
 class Easy21(object):
     """Easy21 game manager.
     >>> game = Easy21()
-    >>> while not game.is_end():
-    ...     game.stick() # or game.hit()
+    >>> state, reward = game.step(HIT)
     """
-    _dealer = []
-    _player = []
-
     def __init__(self):
-        # initialize state
-        pass
+        self._dealer_sum = randint(1, 10)
+        self._player_sum = randint(1, 10)
 
-    def is_end(self):
-        # return true if game is not continuing
-        pass
+    @staticmethod
+    def _draw():
+        return sample(SCORES, 1)[0]
 
     def state(self):
-        # return state : dealer's first card and all of players cards
-        pass
+        return [self._dealer_sum, self._player_sum]
 
-    def stick(self):
-        # do action stick
-        pass
+    def step(self, action):
+        assert(action in ACTIONS)
 
-    def hit(self):
-        # do action do
-        pass
+        if action == HIT:
+            self._player_sum += self._draw()
+            if not 1 <= self._player_sum <= 21:
+                # player lose
+                return [TERMINATED, -1]
+            return [self.state(), 0]
+        else:
+            while self._dealer_sum < 17:
+                self._dealer_sum += self._draw()
 
-    def _step(self, action):
-        # do action
-        # setup next state (draw card)
-        pass
+            if self._dealer_sum < self._player_sum:
+                reward = 1
+            elif self._dealer_sum > self._player_sum:
+                reward = -1
+            else:
+                reward = 0
 
-
-class Card(object):
-    def __init__(self, number=None, color=None):
-        # set color, number
-        # if not set, pick random
-        pass
+            return [TERMINATED, reward]

@@ -1,5 +1,5 @@
 from unittest import TestCase
-from easy21 import Easy21, Card, COLORS
+from easy21 import Easy21, STICK, TERMINATED
 
 
 class TestEasy21(TestCase):
@@ -8,21 +8,13 @@ class TestEasy21(TestCase):
             game = Easy21()
             state = game.state()
 
-            # [ dealer's card  [player's cards] ]
-            self.assertEqual(type(state), 'list')
+            # [ dealer's sum ,  player's sum ]
+            self.assertIsInstance(state, list)
             self.assertEqual(len(state), 2)
 
-            self.assertIsInstance(state[0], Card)
-            self.assertTrue(1 <= state[0].number <= 10)
-            self.assertTrue(state[0].color in COLORS)
+            self.assertTrue(state[0] in range(1, 11))
+            self.assertTrue(state[1] in range(1, 22))
 
-            self.assertEqual(type(state[1]), 'list')
-            self.assertEqual(len(state[1]), 1)
-
-            self.assertIsInstance(state[1][0], Card)
-            self.assertTrue(1 <= state[1][0].number <= 10)
-            self.assertTrue(state[1][0].color in COLORS)
-
-            self.assertFalse(game.is_end())
-            game.stick()
-            self.assertTrue(game.is_end())
+            state, reward = game.step(STICK)
+            self.assertEqual(state, TERMINATED)
+            self.assertTrue(reward in [-1, 0, 1])

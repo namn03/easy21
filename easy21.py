@@ -57,7 +57,8 @@ class Easy21:
             while self._dealer_sum < 17:
                 self._dealer_sum += self._draw()
 
-            if self._dealer_sum < self._player_sum:
+            if self._dealer_sum > PLAYER_MAX or self._dealer_sum < self._player_sum:
+                # bigger or bust
                 if self.verbose:
                     print('Dealer :',  self._dealer_sum)
                     print('Player Win')

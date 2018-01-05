@@ -21,6 +21,10 @@ class Easy21(object):
     def __init__(self):
         self._dealer_sum = randint(1, 10)
         self._player_sum = randint(1, 10)
+        self.verbose = verbose
+        if self.verbose:
+            print('Dealer :', self._dealer_sum)
+            print('Player :', self._player_sum)
 
     @staticmethod
     def _draw():
@@ -36,17 +40,36 @@ class Easy21(object):
             self._player_sum += self._draw()
             if not 1 <= self._player_sum <= 21:
                 # player lose
+                if self.verbose:
+                    print('Player :',  self._player_sum)
+                    print('Player Lose')
+
                 return [TERMINATED, -1]
+
+            if self.verbose:
+                print('Player :',  self._player_sum)
             return [self.state(), 0]
         else:
             while self._dealer_sum < 17:
                 self._dealer_sum += self._draw()
 
             if self._dealer_sum < self._player_sum:
+                if self.verbose:
+                    print('Dealer :',  self._dealer_sum)
+                    print('Player Win')
+
                 reward = 1
             elif self._dealer_sum > self._player_sum:
+                if self.verbose:
+                    print('Dealer :',  self._dealer_sum)
+                    print('Player Lose')
+
                 reward = -1
             else:
+                if self.verbose:
+                    print('Dealer :',  self._dealer_sum)
+                    print('Player Draw')
+
                 reward = 0
 
             return [TERMINATED, reward]

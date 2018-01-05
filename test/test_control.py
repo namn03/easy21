@@ -1,5 +1,5 @@
 from unittest import TestCase
-from mc import epsilon_greedy, MCControl
+from control import epsilon_greedy, MCControl
 
 
 class TestEpsilonGreedy(TestCase):

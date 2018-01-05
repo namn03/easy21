@@ -1,5 +1,5 @@
 from easy21 import Easy21, ACTIONS, TERMINATED, CARD_MAX, PLAYER_MAX
-from mc import MCControl
+from control import MCControl
 
 import matplotlib.pyplot as plt
 from mpl_toolkits.mplot3d import axes3d

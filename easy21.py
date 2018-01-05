@@ -4,24 +4,28 @@ RED = 'red'
 BLACK = 'black'
 COLORS = [RED, BLACK]
 
+CARD_MAX = 10
+PLAYER_MAX = 21
+
 STICK = 'stick'
 HIT = 'hit'
 ACTIONS = [STICK, HIT]
 
-SCORES = list(range(1, 11))*2 + list(range(-10, 0))
+SCORES = list(range(1, CARD_MAX + 1))*2 + list(range(-CARD_MAX, 0))
 
 TERMINATED = 'terminated'
 
 
-class Easy21(object):
+class Easy21:
     """Easy21 game manager.
     >>> game = Easy21()
     >>> state, reward = game.step(HIT)
     """
-    def __init__(self):
-        self._dealer_sum = randint(1, 10)
-        self._player_sum = randint(1, 10)
+    def __init__(self, verbose=False):
         self.verbose = verbose
+        self._dealer_sum = randint(1, CARD_MAX)
+        self._player_sum = randint(1, CARD_MAX)
+
         if self.verbose:
             print('Dealer :', self._dealer_sum)
             print('Player :', self._player_sum)
@@ -38,7 +42,7 @@ class Easy21(object):
 
         if action == HIT:
             self._player_sum += self._draw()
-            if not 1 <= self._player_sum <= 21:
+            if not 1 <= self._player_sum <= PLAYER_MAX:
                 # player lose
                 if self.verbose:
                     print('Player :',  self._player_sum)

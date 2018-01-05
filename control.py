@@ -15,10 +15,10 @@ def epsilon_greedy(epsilon, Qa):
 
 
 class MCControl:
-    N0 = 100
-    GAMMA = 1
+    def __init__(self, num_state, num_action, gamma=1, n0=100):
+        self.GAMMA = gamma
+        self.N0 = n0
 
-    def __init__(self, num_state, num_action):
         self.Qsa = np.zeros((num_state, num_action))
         self.Ns = np.zeros((num_state,))
         self.Nsa = np.zeros((num_state, num_action))
